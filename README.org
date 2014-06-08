@@ -1,0 +1,8 @@
+#+TITLE: minicaml
+#+AUTHOR: MiyamonY
+#+STARTUP: showall
+#+LANGUAGE:ja
+#+OPTIONS: \n:nil creator:nil
+
+* minicaml
+  
