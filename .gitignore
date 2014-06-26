@@ -1,5 +1,7 @@
 obj/
 !obj/.gitignore
+obj_test/
+!obj_test/.gitignore
 
 *.omc
 .omakedb

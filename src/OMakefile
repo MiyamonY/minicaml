@@ -35,43 +35,12 @@
 # Configuration.  You may want to modify any of these configuration
 # variables.
 #
-
 #
-# This project requires ocamlfind (default - false).
-#
-USE_OCAMLFIND = true
-#
-# OCAMLPACKS[] =
-#    pack1
-#    pack2
-#
-if $(not $(OCAMLFIND_EXISTS))
-    eprintln(This project requires ocamlfind, but is was not found.)
-    eprintln(You need to install ocamlfind and run "omake --configure".)
-    exit 1
 
 #
 # Include path
 #
 # OCAMLINCLUDES +=
-
-#
-# Compile native or byte code? 
-#
-# The default values are defined as follows:
-#
-NATIVE_ENABLED = $(OCAMLOPT_EXISTS)
-BYTE_ENABLED = $(not $(OCAMLOPT_EXISTS))
-
-#
-# Various options
-#
-# OCAMLFLAGS    +=
-# OCAMLCFLAGS   +=
-# OCAMLOPTFLAGS +=
-# OCAML_LINK_FLAGS +=
-# OCAML_BYTE_LINK_FLAGS +=
-# OCAML_NATIVE_LINK_FLAGS +=
 
 ################################################
 # Generated files
@@ -96,33 +65,25 @@ OCamlGeneratedFiles($(PARSER_FILE).ml $(LEXER_FILE).ml)
 #    file1
 #    file2
 #
-# LIB = main
-#
-# .DEFAULT: $(OCamlLibrary $(LIB), $(FILES))
+LIB = target
+# 
 
 ################################################
 # Build an OCaml program
-#
 
-FILES[] =
-	environment
-	eval
-	lexer
-	parser
-	main
-	syntax
+FILES[] = $(removesuffix $(filter %.ml, $(ls R, .))) \
+	$(LEXER_FILE) $(PARSER_FILE)
 
-PROGRAM =miniml
-# OCAML_LIBS +=
-# OCAML_CLIBS +=
-# OCAML_OTHER_LIBS +=
-# OCAML_LIB_FLAGS +=
-#
+PROGRAM = miniml
+OCAML_LIBS +=
+OCAML_CLIBS +=
+OCAML_OTHER_LIBS +=
+OCAML_LIB_FLAGS +=
 
 .DEFAULT: $(OCamlProgram $(PROGRAM), $(FILES))
 
-RM=rm
+test: $(OCamlLibrary $(LIB), $(FILES))
+
 clean:
-	$(RM) -f $(glob *.cm[ix] *.o) $(PARSER_FILE).ml $(PARSER_FILE).mli \
-	$(LEXER_FILE).ml $(LEXER_FILE).mli \
-	$(PROGRAM).opt $(PROGRAM)
+	$(RM) *.cmt *.cmti
+

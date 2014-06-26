@@ -23,15 +23,7 @@
 # Phony targets are scoped, so you probably want to declare them first.
 #
 
-.PHONY: all clean
-
-########################################################################
-# Subdirectories.
-# You may want to include some subdirectories in this project.
-# If so, define the subdirectory targets and uncomment this section.
-#
-vmount(-l, src, obj)
-.SUBDIRS:obj
+.PHONY: test clean
 
 ########################################################################
 # OCaml configuration.
@@ -46,72 +38,40 @@ vmount(-l, src, obj)
 #
 # This project requires ocamlfind (default - false).
 #
-# USE_OCAMLFIND = true
-#
-# OCAMLPACKS[] =
-#    pack1
-#    pack2
-#
-# if $(not $(OCAMLFIND_EXISTS))
-#    eprintln(This project requires ocamlfind, but is was not found.)
-#    eprintln(You need to install ocamlfind and run "omake --configure".)
-#    exit 1
+USE_OCAMLFIND = true
 
-#
-# Include path
-#
-# OCAMLINCLUDES +=
+if $(not $(OCAMLFIND_EXISTS))
+   eprintln(This project requires ocamlfind, but is was not found.)
+   eprintln(You need to install ocamlfind and run "omake --configure".)
+   exit 1
+
 
 #
 # Compile native or byte code? 
 #
 # The default values are defined as follows:
 #
-NATIVE_ENABLED = $(OCAMLOPT_EXISTS)
-BYTE_ENABLED = $(not $(OCAMLOPT_EXISTS))
+NATIVE_ENABLED = true #$(OCAMLOPT_EXISTS)
+BYTE_ENABLED = true #$(not $(OCAMLOPT_EXISTS))
 
 #
 # Various options
 #
-# OCAMLFLAGS    +=
-# OCAMLCFLAGS   +=
-# OCAMLOPTFLAGS +=
-# OCAML_LINK_FLAGS +=
-# OCAML_BYTE_LINK_FLAGS +=
-# OCAML_NATIVE_LINK_FLAGS +=
+OCAMLFLAGS    +=
+OCAMLCFLAGS   +=
+OCAMLOPTFLAGS +=
+OCAML_LINK_FLAGS +=
+OCAML_BYTE_LINK_FLAGS +=
+OCAML_NATIVE_LINK_FLAGS +=
 
-################################################
-# Generated files
-#
-# Workaround for the fact that ocamldep does not pay attention to .mll
-# and .mly files.
-#
-# OCamlGeneratedFiles(parser.ml lexer.ml)
+clean:
+	$(RM) $(filter-proper-targets $(ls R, .))
 
-################################################
-# Build an OCaml library
+########################################################################
+# Subdirectories.
+# You may want to include some subdirectories in this project.
+# If so, define the subdirectory targets and uncomment this section.
 #
-
-# FILES[] =
-#    file1
-#    file2
-#
-# LIB = main
-#
-# .DEFAULT: $(OCamlLibrary $(LIB), $(FILES))
-
-################################################
-# Build an OCaml program
-#
-
-# FILES[] =
-#    file1
-#    file2
-#
-# PROGRAM =
-# OCAML_LIBS +=
-# OCAML_CLIBS +=
-# OCAML_OTHER_LIBS +=
-# OCAML_LIB_FLAGS +=
-#
-# .DEFAULT: $(OCamlProgram $(PROGRAM), $(FILES))
+vmount(-l, src, obj)
+vmount(-l, test, obj_test)
+.SUBDIRS:obj_test obj

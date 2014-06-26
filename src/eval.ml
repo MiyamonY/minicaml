@@ -48,4 +48,6 @@ let rec eval_exp env = function
       end
         
 let eval_decl env = function
-    Exp e -> let v = eval_exp env e in ("-", env, v)
+    | Exp e ->
+       let v = eval_exp env e in
+       ("-", env, v)
